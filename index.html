@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>For Huda ❤️</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Nunito:wght@400;700&display=swap" rel="stylesheet">
+    
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
+    <style>
+        /* --- CSS STYLES --- */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background: linear-gradient(120deg, #ff9a9e 0%, #fecfef 99%, #feada6 100%);
+            background-size: 400% 400%;
+            animation: gradientMove 15s ease infinite;
+            font-family: 'Nunito', sans-serif;
+            overflow: hidden;
+            position: relative;
+        }
+
+        @keyframes gradientMove {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* --- START SCREEN --- */
+        #start-screen {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.9);
+            z-index: 9999;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            cursor: pointer;
+            transition: opacity 1s ease;
+        }
+
+        #start-screen h1 {
+            font-family: 'Great Vibes', cursive;
+            font-size: 4rem;
+            margin-bottom: 20px;
+            text-shadow: 0 0 10px #ff4d6d;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); text-shadow: 0 0 10px #ff4d6d; }
+            50% { transform: scale(1.05); text-shadow: 0 0 20px #ff4d6d; }
+            100% { transform: scale(1); text-shadow: 0 0 10px #ff4d6d; }
+        }
+
+        /* --- FLOATING HEARTS --- */
+        .hearts-container {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            pointer-events: none;
+            z-index: 0;
+        }
+        .heart {
+            position: absolute;
+            bottom: -10vh;
+            background-color: rgba(255, 255, 255, 0.6);
+            clip-path: polygon(50% 0%, 100% 38%, 82% 100%, 50% 80%, 18% 100%, 0% 38%);
+            animation: floatUp linear forwards; 
+        }
+        @keyframes floatUp { to { transform: translateY(-120vh) rotate(360deg); opacity: 0; } }
+
+        /* --- MAIN CARD --- */
+        .container {
+            position: relative;
+            z-index: 10;
+            text-align: center;
+            background: rgba(255, 255, 255, 0.4);
+            padding: 40px 50px;
+            border-radius: 30px;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.15);
+            backdrop-filter: blur(20px); /* Stronger blur for premium look */
+            border: 1px solid rgba(255, 255, 255, 0.8);
+            width: 90%;
+            max-width: 500px;
+            opacity: 0; 
+            transform: translateY(20px);
+            transition: all 1s ease;
+        }
+
+        /* Photo Slideshow Styles */
+        .photo-frame {
+            width: 200px;
+            height: 200px;
+            border-radius: 50%; /* Circle frame */
+            border: 5px solid white;
+            margin: 0 auto 20px auto;
+            overflow: hidden;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+            position: relative;
+        }
+        
+        .photo-frame img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            position: absolute;
+            top: 0; left: 0;
+            opacity: 0;
+            transition: opacity 1s ease-in-out;
+        }
+        
+        .photo-frame img.active { opacity: 1; }
+
+        /* Typography */
+        h1 {
+            font-family: 'Great Vibes', cursive;
+            color: #d63384;
+            font-size: 3.5rem;
+            margin-bottom: 5px;
+            min-height: 70px; /* Space for typewriter */
+        }
+
+        .subtitle { 
+            color: #444; 
+            font-size: 1.3rem; 
+            margin-bottom: 30px; 
+            font-style: italic;
+            height: 30px;
+        }
+
+        /* Buttons */
+        .btn-group {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            position: relative;
+            height: 60px; 
+            margin-top: 20px;
+        }
+
+        button {
+            padding: 12px 35px;
+            font-size: 1.3rem;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            font-family: 'Nunito', sans-serif;
+            font-weight: 700;
+            transition: all 0.3s ease;
+            white-space: nowrap;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        #yes-btn {
+            background: linear-gradient(45deg, #ff4d6d, #ff8fa3);
+            color: white;
+            z-index: 100;
+        }
+
+        #yes-btn:hover { 
+            transform: scale(1.1); 
+            box-shadow: 0 8px 25px rgba(255, 77, 109, 0.5);
+        }
+
+        #no-btn {
+            background: white;
+            color: #ff4d6d;
+            border: 2px solid #ff4d6d;
+            position: absolute;
+            left: 55%; 
+            z-index: 100;
+        }
+
+        /* --- CELEBRATION SCREEN --- */
+        .hidden { display: none !important; }
+
+        #celebration-screen {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: linear-gradient(120deg, #ff9a9e 0%, #fecfef 100%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 200;
+            opacity: 0;
+            transition: opacity 1s ease;
+        }
+
+        .celebration-content {
+            text-align: center;
+            background: rgba(255, 255, 255, 0.9);
+            padding: 50px;
+            border-radius: 40px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.2);
+            animation: popUp 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            max-width: 90%;
+        }
+
+        .celebration-content h1 { font-size: 4.5rem; color: #ff0054; margin-bottom: 20px; }
+        .celebration-content p { font-size: 1.5rem; color: #555; }
+        .celebrate-gif { width: 250px; margin: 20px 0; border-radius: 20px; }
+        
+        @keyframes popUp { from { transform: scale(0.5); } to { transform: scale(1); } }
+    </style>
+</head>
+<body>
+
+    <audio id="bg-music" loop>
+        <source src="music.mp3" type="audio/mpeg">
+    </audio>
+
+    <div id="start-screen" onclick="startExperience()">
+        <h1>For Huda ❤️</h1>
+        <p style="font-size: 1rem; color: #ccc;">(Click to begin your surprise)</p>
+    </div>
+
+    <div class="hearts-container"></div>
+
+    <div class="container" id="main-card">
+        <div class="photo-frame">
+            <img src="./photo1.jpeg" class="slide active" alt="Photo 1">
+            <img src="./photo2.jpeg" class="slide" alt="Photo 2">
+            <img src="./photo3.jpeg" class="slide" alt="Photo 3">
+            <img src="./photo4.jpeg" class="slide" alt="Photo 3">
+            <img src="./photo5.jpeg" class="slide" alt="Photo 3">
+        </div>
+
+        <h1 id="question"></h1> <p class="subtitle" id="dynamic-subtitle">You are my everything...</p>
+        
+        <div class="btn-group">
+            <button id="yes-btn">YES! ❤️</button>
+            <button id="no-btn">No</button>
+        </div>
+    </div>
+
+    <div id="celebration-screen" class="hidden">
+        <div class="celebration-content">
+            <h1>She said YES!! 💍</h1>
+            <p>I love you forever, Huda!</p>
+            <img src="/photoc.jpeg" alt="Happy Cat" class="celebrate-gif">
+        </div>
+    </div>
+
+    <script>
+        // --- CONFIGURATION ---
+        const startScreen = document.getElementById("start-screen");
+        const mainCard = document.getElementById("main-card");
+        const bgMusic = document.getElementById("bg-music");
+        const yesBtn = document.getElementById("yes-btn");
+        const noBtn = document.getElementById("no-btn");
+        const celebrationScreen = document.getElementById("celebration-screen");
+        const questionText = document.getElementById("question");
+        const subtitleText = document.getElementById("dynamic-subtitle");
+
+        // --- 1. START EXPERIENCE ---
+        function startExperience() {
+            // Play Music
+            bgMusic.play().catch(e => console.log("Audio requires interaction"));
+
+            // Hide Start Screen
+            startScreen.style.opacity = "0";
+            setTimeout(() => {
+                startScreen.style.display = "none";
+                mainCard.style.opacity = "1";
+                mainCard.style.transform = "translateY(0)";
+                
+                // Start the Typewriter effect
+                typeWriter();
+            }, 800);
+        }
+
+        // --- 2. TYPEWRITER EFFECT ---
+        const text = "Huda, will you be my wife?";
+        let i = 0;
+        function typeWriter() {
+            if (i < text.length) {
+                questionText.innerHTML += text.charAt(i);
+                i++;
+                setTimeout(typeWriter, 100); // Speed of typing
+            }
+        }
+
+        // --- 3. SUBTITLE CHANGER (Reasons I Love You) ---
+        const reasons = [
+            "You are my favorite person 🌸",
+            "You make me the happiest ❤️",
+            "I can't imagine life without you ✨",
+            "You are beautiful inside and out 🦋"
+        ];
+        let reasonIndex = 0;
+        setInterval(() => {
+            subtitleText.style.opacity = 0; // Fade out
+            setTimeout(() => {
+                reasonIndex = (reasonIndex + 1) % reasons.length;
+                subtitleText.innerText = reasons[reasonIndex];
+                subtitleText.style.opacity = 1; // Fade in
+            }, 500);
+        }, 4000); // Change every 4 seconds
+
+        // --- 4. PHOTO SLIDESHOW ---
+        const slides = document.querySelectorAll('.slide');
+        let slideIndex = 0;
+        setInterval(() => {
+            slides[slideIndex].classList.remove('active');
+            slideIndex = (slideIndex + 1) % slides.length;
+            slides[slideIndex].classList.add('active');
+        }, 3000); // Change photo every 3 seconds
+
+        // --- 5. FLOATING HEARTS ---
+        function createHeart() {
+            const heart = document.createElement("div");
+            heart.classList.add("heart");
+            heart.style.left = Math.random() * 100 + "vw";
+            heart.style.animationDuration = Math.random() * 2 + 3 + "s";
+            const size = Math.random() * 20 + 10 + "px";
+            heart.style.width = size;
+            heart.style.height = size;
+            heart.style.backgroundColor = Math.random() > 0.5 ? "#ff4d6d" : "#ffccd5";
+            document.querySelector(".hearts-container").appendChild(heart);
+            setTimeout(() => { heart.remove(); }, 5000);
+        }
+        setInterval(createHeart, 300);
+
+        // --- 6. NO BUTTON LOGIC ---
+        const funnyTexts = ["Are you sure?", "Think again!", "Last chance!", "Don't say no!", "I'm gonna cry!", "Please?", "Really?", "Wrong button!"];
+        noBtn.addEventListener("mouseover", () => {
+            const x = Math.floor(Math.random() * (window.innerWidth - 200));
+            const y = Math.floor(Math.random() * (window.innerHeight - 100));
+            
+            noBtn.style.position = "fixed";
+            noBtn.style.left = x + "px";
+            noBtn.style.top = y + "px";
+            
+            noBtn.innerText = funnyTexts[Math.floor(Math.random() * funnyTexts.length)];
+            
+            // Make Yes button Grow
+            const currentSize = parseFloat(window.getComputedStyle(yesBtn).fontSize);
+            yesBtn.style.fontSize = (currentSize + 2) + "px";
+            yesBtn.style.padding = "15px " + ((currentSize + 2) * 2) + "px";
+        });
+
+        // --- 7. YES BUTTON CELEBRATION ---
+        yesBtn.addEventListener("click", () => {
+            mainCard.style.display = "none";
+            celebrationScreen.classList.remove("hidden");
+            celebrationScreen.style.opacity = "1";
+            celebrationScreen.style.display = "flex";
+            
+            // Massive Confetti Explosion
+            startConfetti();
+        });
+
+        function startConfetti() {
+            const duration = 15 * 1000;
+            const animationEnd = Date.now() + duration;
+            const defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 999 };
+
+            const interval = setInterval(function() {
+                const timeLeft = animationEnd - Date.now();
+                if (timeLeft <= 0) return clearInterval(interval);
+                const particleCount = 50 * (timeLeft / duration);
+                confetti(Object.assign({}, defaults, { particleCount, origin: { x: Math.random(), y: Math.random() - 0.2 } }));
+            }, 250);
+        }
+    </script>
+</body>
+</html>
